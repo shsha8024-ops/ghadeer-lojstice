@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>كشف حساب عام | شركة الغدير للنقل والتخليص الكمركي</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<style>
+body {
+  font-family: "Cairo", sans-serif;
+  background: linear-gradient(180deg,#f7faff,#eef5ff);
+  color: #000;
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== الهيدر ===== */
+header {
+  background: linear-gradient(90deg,#003366,#004b95);
+  color: #fff;
+  padding: 1.5rem 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+  border-bottom: 3px solid #c2a356;
+}
+.brand {display:flex;align-items:center;gap:16px}
+.brand img{width:70px;height:70px;object-fit:contain}
+.brand-name span{font-size:1.5rem;font-weight:900;}
+.brand-name small{color:#f8e9b3;font-size:.95rem}
+
+/* ===== المحتوى ===== */
+main {
+  flex: 1;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  width: 95%;
+}
+h2 {
+  text-align: center;
+  color: #004b95;
+  border-bottom: 2px solid #c2a356;
+  padding-bottom: 6px;
+  margin-bottom: 1rem;
+}
+
+/* ===== البحث ===== */
+.search-bar {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+.search-bar input {
+  width: 70%;
+  max-width: 450px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  background: #fff;
+  color: #000;
+  font-size: 1rem;
+}
+
+/* ===== الجدول ===== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 25px rgba(0,0,0,0.1);
+}
+th, td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  text-align: center;
+  font-size: 1rem;
+}
+th {
+  background: #f2f6fb;
+  color: #003366;
+  font-weight: 700;
+}
+
+/* ===== الأزرار ===== */
+button {
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
+}
+.view-btn {
+  background: linear-gradient(90deg,#004b95,#008d5f);
+  color: #fff;
+}
+.view-btn:hover {background:#008d5f;}
+.pdf-btn {
+  background: linear-gradient(90deg,#b9973e,#f0cd63);
+  color: #000;
+}
+.pdf-btn:hover {opacity:0.9;}
+.back-btn {
+  background:#004b95;
+  color:#fff;
+}
+.back-btn:hover {background:#008d5f;}
+
+.buttons {
+  text-align:center;
+  margin:1.5rem 0;
+}
+
+/* ===== الفوتر ===== */
+footer {
+  background:#fafafa;
+  text-align:center;
+  padding:1.5rem;
+  color:#000;
+  border-top:1px solid #ddd;
+  font-size:.95rem;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <img src="ghadeer-logo.png" alt="ghadeer logo">
+    <div class="brand-name">
+      <span>شركة الغدير</span><br>
+      <small>للنقل والتخليص الكمركي</small>
+    </div>
+  </div>
+</header>
+
+<main id="pdfContent">
+  <h2>كشف حساب عام</h2>
+
+  <div class="search-bar">
+    <input type="text" id="searchBox" placeholder="🔍 ابحث عن عميل...">
+  </div>
+
+  <div class="buttons">
+    <button class="pdf-btn" onclick="generatePDF()">🖨️ طباعة PDF</button>
+    <button class="back-btn" onclick="window.location.href='home.html'">🔙 رجوع</button>
+  </div>
+
+  <table id="clientsTable">
+    <thead>
+      <tr>
+        <th>اسم العميل</th>
+        <th>إجمالي الوصولات ($)</th>
+        <th>إجمالي القبوضات ($)</th>
+        <th>الرصيد النهائي ($)</th>
+        <th>إجراء</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</main>
+
+<footer>
+  زاخو - إبراهيم الخليل 📞 07504084359 • 📧 starzeki001@gmail.com  
+  <br>© 2026 شركة الغدير للنقل والتخليص الكمركي – جميع الحقوق محفوظة
+</footer>
+
+<script>
+let allReceipts = JSON.parse(localStorage.getItem('ghadeerAllReceipts') || '[]');
+let invoices = JSON.parse(localStorage.getItem('ghadeerInvoices') || '[]');
+
+// استخراج كل العملاء
+let clientsMap = {};
+
+invoices.forEach(inv=>{
+  if(!inv.client) return;
+  if(!clientsMap[inv.client]) clientsMap[inv.client]={receipts:0,payments:0};
+  if(inv.receipts){
+    inv.receipts.forEach(r=>{
+      clientsMap[inv.client].receipts += r.amount;
+    });
+  }
+});
+
+allReceipts.forEach(r=>{
+  if(!r.client) return;
+  if(!clientsMap[r.client]) clientsMap[r.client]={receipts:0,payments:0};
+  clientsMap[r.client].payments += r.amount;
+});
+
+function renderTable(){
+  const search=document.getElementById('searchBox').value.toLowerCase();
+  const tbody=document.querySelector('#clientsTable tbody');
+  tbody.innerHTML='';
+  Object.keys(clientsMap)
+    .filter(name=>name.toLowerCase().includes(search))
+    .forEach(name=>{
+      const r=clientsMap[name];
+      const balance=r.receipts - r.payments;
+      tbody.innerHTML+=`
+      <tr>
+        <td>${name}</td>
+        <td>${r.receipts.toFixed(2)}</td>
+        <td>${r.payments.toFixed(2)}</td>
+        <td>${balance.toFixed(2)}</td>
+        <td><button class="view-btn" onclick="openClient('${name}')">📄 عرض كشف العميل</button></td>
+      </tr>`;
+    });
+}
+
+function openClient(name){
+  localStorage.setItem('currentClient', name);
+  window.location.href='client-account1.html';
+}
+
+// طباعة PDF
+function generatePDF(){
+  const dateStr=new Date().toLocaleString('ar-IQ');
+  const element=document.getElementById('pdfContent');
+  const opt={
+    margin:0.3,
+    filename:`كشف حساب عام ${dateStr}.pdf`,
+    image:{type:'jpeg',quality:0.98},
+    html2canvas:{scale:2},
+    jsPDF:{unit:'in',format:'a4',orientation:'portrait'}
+  };
+  html2pdf().set(opt).from(element).toPdf().get('pdf').then(pdf=>{
+    const totalPages=pdf.internal.getNumberOfPages();
+    for(let i=1;i<=totalPages;i++){
+      pdf.setPage(i);
+      pdf.setFontSize(9);
+      pdf.text(`📅 ${dateStr}`,pdf.internal.pageSize.getWidth()-140,pdf.internal.pageSize.getHeight()-10,{align:'left'});
+      pdf.text(`صفحة ${i} من ${totalPages}`,40,pdf.internal.pageSize.getHeight()-10);
+    }
+  }).save();
+}
+
+document.getElementById('searchBox').addEventListener('input',renderTable);
+renderTable();
+</script>
+
+</body>
+</html>

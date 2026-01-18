@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>القبوضات | شركة الغدير للنقل والتخليص الكمركي</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+<style>
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: "Cairo", sans-serif;
+  background: linear-gradient(180deg,#f7faff,#eef5ff);
+  color: #000;
+  direction: rtl;
+  overflow-x: hidden;
+}
+
+/* ===== الهيدر ===== */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background: linear-gradient(90deg,#003366,#004b95);
+  color: #fff;
+  padding: 1.2rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 3px solid #c2a356;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.brand img {
+  width: 65px;
+  height: 65px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3));
+}
+.brand-name span {
+  font-size: 1.4rem;
+  font-weight: 900;
+}
+.brand-name small {
+  color: #f8e9b3;
+  font-size: .9rem;
+}
+nav ul {
+  display: flex;
+  gap: 1.2rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+nav a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+}
+nav a:hover { color: #fcd670; }
+
+/* ===== المحتوى ===== */
+main {
+  min-height: calc(100vh - 160px);
+  max-width: 1200px;
+  width: 96%;
+  margin: 2rem auto;
+  padding: 1.5rem 2rem;
+}
+h2 {
+  text-align: center;
+  color: #004b95;
+  border-bottom: 2px solid #c2a356;
+  padding-bottom: 6px;
+  margin-bottom: 2rem;
+}
+
+/* ===== البحث ===== */
+.search-bar {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+.search-bar input {
+  width: 70%;
+  max-width: 450px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  background: #fff;
+  color: #000;
+  font-size: 1rem;
+}
+
+/* ===== الجدول ===== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+}
+th, td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  text-align: center;
+  font-size: 0.95rem;
+}
+th {
+  background: #f2f6fb;
+  color: #003366;
+  font-weight: bold;
+}
+tfoot td {
+  background: #fffbea;
+  font-weight: bold;
+}
+
+/* ===== الأزرار ===== */
+.add-btn, .print-btn, .back-btn {
+  border: none;
+  padding: 10px 22px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+  margin: 8px;
+}
+.add-btn {
+  background: linear-gradient(90deg,#004b95,#008d5f);
+  color: #fff;
+}
+.add-btn:hover { background:#008d5f; }
+.print-btn {
+  background: linear-gradient(90deg,#b9973e,#f0cd63);
+  color: #000;
+}
+.back-btn {
+  background: #004b95;
+  color: #fff;
+}
+button:hover { opacity: 0.9; }
+
+/* ===== الفوتر ===== */
+footer {
+  background:#fafafa;
+  text-align:center;
+  padding:1rem;
+  color:#000;
+  border-top:1px solid #ddd;
+  font-size:.9rem;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <img src="ghadeer-logo.png" alt="ghadeer logo">
+    <div class="brand-name">
+      <span>شركة الغدير</span><br>
+      <small>للنقل والتخليص الكمركي</small>
+    </div>
+  </div>
+  <nav>
+    <ul>
+      <li><a href="home.html">الرئيسية</a></li>
+      <li><a href="client.html">العملاء</a></li>
+      <li><a href="#" style="color:#fcd670;">القبوضات</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <h2>قبوضات العملاء</h2>
+
+  <div class="search-bar">
+    <input type="text" id="searchBox" placeholder="🔍 ابحث عن عميل...">
+  </div>
+
+  <div style="text-align:center;margin-bottom:1.5rem;">
+    <button class="add-btn">+ إضافة وصل</button>
+    <button class="print-btn">🖨️ PDF</button>
+    <button class="back-btn" onclick="window.location.href='home.html'">🔙 رجوع</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>العميل</th>
+        <th>رقم الوصل</th>
+        <th>التاريخ</th>
+        <th>طريقة الدفع</th>
+        <th>الملاحظة</th>
+        <th>المبلغ ($)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>أحمد سالم</td>
+        <td>RCPT-001</td>
+        <td>2026-01-17</td>
+        <td>نقدي</td>
+        <td>دفعة أولى</td>
+        <td>1200$</td>
+      </tr>
+      <tr>
+        <td>محمد علي</td>
+        <td>RCPT-002</td>
+        <td>2026-01-18</td>
+        <td>تحويل</td>
+        <td>وصل تحويل مصرفي</td>
+        <td>3000$</td>
+      </tr>
+      <tr>
+        <td>سرمد حيدر</td>
+        <td>RCPT-003</td>
+        <td>2026-01-19</td>
+        <td>شيك</td>
+        <td>دفعة ثانية</td>
+        <td>1800$</td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="5">إجمالي المبالغ</td>
+        <td>6000$</td>
+      </tr>
+    </tfoot>
+  </table>
+</main>
+
+<footer>
+  📍 زاخو - إبراهيم الخليل • 📞 07504084359 • 📧 starzeki001@gmail.com  
+  <br>© 2026 شركة الغدير للنقل والتخليص الكمركي – جميع الحقوق محفوظة
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>طباعة الفاتورة | شركة الغدير للنقل والتخليص الكمركي</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+<style>
+body {
+  font-family: "Cairo", sans-serif;
+  background: #fff;
+  margin: 0;
+  color: #000;
+  padding: 2rem;
+  direction: rtl;
+  position: relative;
+}
+
+/* ===== العلامة المائية ===== */
+body::before {
+  content: "";
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -30%);
+  width: 400px;
+  height: 400px;
+  background: url('ghadeer-logo.png') no-repeat center center;
+  background-size: contain;
+  opacity: 0.08;
+  z-index: -1;
+}
+
+.print-area {
+  max-width: 800px;
+  margin: auto;
+  background: #fff;
+  padding: 2rem;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
+header {
+  text-align: center;
+  border-bottom: 2px solid #c2a356;
+  padding-bottom: 1rem;
+}
+header img {
+  width: 90px;
+  height: 90px;
+}
+header h1 {
+  margin: 0;
+  color: #000;
+}
+header p {
+  margin: 0;
+  color: #444;
+  font-weight: 600;
+}
+.info {
+  margin-top: 1.5rem;
+  font-size: 1rem;
+  color: #000;
+}
+.info p { margin: 5px 0; }
+
+/* ===== الجدول ===== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1.5rem;
+  border: 1px solid #ccc;
+}
+th {
+  background: #f9f9f9;
+  color: #004b95; /* أزرق للعناوين */
+  font-weight: bold;
+}
+td {
+  border: 1px solid #bbb;
+  padding: 8px;
+  text-align: center;
+  color: #000; /* ✅ نصوص الجدول بالأسود */
+}
+tfoot td {
+  background: #fef7d3;
+  font-weight: bold;
+  color: #000; /* المجموع بالأسود */
+}
+
+/* ===== التذييل ===== */
+.footer-note {
+  margin-top: 2rem;
+  font-size: 0.9rem;
+  color: #000;
+  text-align: center;
+  border-top: 2px solid #ccc;
+  padding-top: 1rem;
+}
+
+/* ===== الأزرار ===== */
+.actions {
+  text-align: center;
+  margin-top: 2rem;
+}
+button {
+  background: linear-gradient(90deg,#004b95,#008d5f);
+  color: #fff;
+  border: none;
+  padding: 12px 25px;
+  margin: 5px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  position: relative;
+  overflow: hidden;
+}
+button::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255,215,0,0.3);
+  transition: 0.4s;
+}
+button:active::after { left: 0; transition: 0s; }
+button:hover { background: #008d5f; transform: translateY(-2px); }
+
+@media print {
+  .actions { display: none; }
+  body { background: #fff; color: #000; }
+  .print-area { box-shadow: none; border: none; margin: 0; }
+  body::before { opacity: 0.06; }
+}
+</style>
+</head>
+<body>
+
+<div class="print-area" id="printArea">
+  <header>
+    <img src="ghadeer-logo.png" alt="ghadeer logo">
+    <h1>شركة الغدير للنقل والتخليص الكمركي</h1>
+    <p>Ghadeer Transport & Customs Clearance</p>
+  </header>
+
+  <section class="info">
+    <p><strong>📄 رقم الفاتورة:</strong> <span id="invId"></span></p>
+    <p><strong>📅 التاريخ:</strong> <span id="invDate"></span></p>
+    <p><strong>🕒 الساعة:</strong> <span id="invTime"></span></p>
+  </section>
+
+  <table>
+    <thead>
+      <tr>
+        <th>رقم الوصل</th>
+        <th>التاريخ</th>
+        <th>اسم السائق</th>
+        <th>رقم السيارة</th>
+        <th>المحافظة</th>
+        <th>ملاحظة</th>
+        <th>المبلغ ($)</th>
+      </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+    <tfoot>
+      <tr>
+        <td colspan="6">إجمالي المبلغ</td>
+        <td id="total">$0.00</td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <div class="footer-note">
+    Zakho - Ibrahim Khalil | 📲 0750 408 4359 | 📧 starzeki001@gmail.com
+  </div>
+</div>
+
+<div class="actions">
+  <button onclick="window.print()">🖨️ طباعة</button>
+  <button onclick="downloadPDF()">💾 تنزيل PDF</button>
+  <button onclick="goBack()">🔙 رجوع</button>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script>
+const invoice = JSON.parse(localStorage.getItem('selectedInvoice') || '{}');
+if (!invoice.id) {
+  document.getElementById('printArea').innerHTML = '<h3 style="text-align:center;">لا توجد بيانات للفاتورة</h3>';
+} else {
+  document.getElementById('invId').textContent = invoice.id;
+  const now = new Date();
+  document.getElementById('invDate').textContent = now.toLocaleDateString('ar-IQ');
+  document.getElementById('invTime').textContent = now.toLocaleTimeString('ar-IQ');
+  let total = 0;
+  const tbody = document.getElementById('tbody');
+  invoice.receipts.forEach(r => {
+    total += r.amount;
+    tbody.innerHTML += `
+      <tr>
+        <td>${r.id}</td>
+        <td>${r.date}</td>
+        <td>${r.driver}</td>
+        <td>${r.car}</td>
+        <td>${r.city}</td>
+        <td>${r.note}</td>''
+        <td>${r.amount.toFixed(2)}$</td>
+      </tr>`;
+  });
+  document.getElementById('total').textContent = total.toFixed(2) + '$';
+}
+
+function downloadPDF() {
+  const element = document.getElementById('printArea');
+  const opt = {
+    margin: 0.5,
+    filename: `${invoice.id || 'فاتورة'}.pdf`,
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2 },
+    jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+  };
+  html2pdf().set(opt).from(element).save();
+}
+
+function goBack() {
+  // يرجع مباشرة إلى صفحة الفواتير
+  window.location.href = "invoice-details.html";
+
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>الرئيسية | شركة الغدير للنقل والتخليص المكرمي</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+<style>
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: "Cairo", sans-serif;
+  background: #f9fcff;
+  color: #222;
+  overflow-x: hidden;
+}
+
+/* الهيدر */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background: linear-gradient(90deg, #002b72, #0055a5, #c2a356);
+  color: #fff;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  border-bottom: 2px solid #eacb65;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.brand img {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.3));
+}
+.brand-name span {
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: #fff;
+}
+.brand-name small {
+  color: #fff8d9;
+}
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 1.2rem;
+  margin: 0;
+  padding: 0;
+}
+nav a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.3s;
+}
+nav a:hover {
+  color: #fcd670;
+}
+
+/* المحتوى الرئيسي */
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: calc(100vh - 120px);
+  padding: 3rem 1rem 4rem;
+  box-sizing: border-box;
+}
+h1 {
+  color: #004b95;
+  margin-bottom: 2rem;
+  border-bottom: 3px solid #c2a356;
+  padding-bottom: 8px;
+}
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 1100px;
+}
+.dashboard-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 2rem;
+  text-align: center;
+  border-top: 4px solid #007aff;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  transition: all 0.3s ease;
+}
+.dashboard-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0,86,165,0.25);
+}
+.dashboard-card h3 {
+  color: #004b95;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+.dashboard-card p {
+  color: #666;
+  font-size: 0.95rem;
+}
+.dashboard-card a {
+  display: block;
+  margin-top: 1rem;
+  text-decoration: none;
+  color: #fff;
+  background: linear-gradient(90deg,#004b95,#008d5f);
+  padding: 10px 0;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+.dashboard-card a:hover {
+  opacity: 0.9;
+}
+
+/* الفوتر */
+footer {
+  background: #fafafa;
+  text-align: center;
+  padding: 1.5rem;
+  color: #666;
+  font-size: 0.9rem;
+  border-top: 1px solid #eee;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <img src="ghadeer-logo.png" alt="ghadeer logo">
+    <div class="brand-name">
+      <span>شركة الغدير</span><br>
+      <small>للنقل والتخليص المكرمي</small>
+    </div>
+  </div>
+  <nav>
+    <ul>
+      <li><a href="home.html">الرئيسية</a></li>
+      <li><a href="client.html">العملاء</a></li>
+      <li><a href="client-details.html">الفواتير</a></li>
+      <li><a href="statement.html">كشف الحساب</a></li>
+      <li><a href="expenses.html">المصروفات</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <h1>لوحة التحكم الرئيسية</h1>
+  <div class="dashboard-grid">
+    <div class="dashboard-card">
+      <h3>👥 العملاء</h3>
+      <p>إدارة وإضافة عملاء جدد</p>
+      <a href="client.html">فتح</a>
+    </div>
+    <div class="dashboard-card">
+      <h3>🧾 الفواتير</h3>
+      <p>عرض وتحرير فواتير العملاء</p>
+      <a href="client-details.html">فتح</a>
+    </div>
+    <div class="dashboard-card">
+      <h3>📊 كشف الحساب</h3>
+      <p>مراجعة العمليات المالية والرصيد</p>
+      <a href="statement.html">فتح</a>
+    </div>
+    <div class="dashboard-card">
+      <h3>💰 المصروفات</h3>
+      <p>إضافة وتتبع مصروفات الشركة</p>
+      <a href="expenses.html">فتح</a>
+    </div>
+    <div class="dashboard-card">
+      <h3>📝 الملاحظات</h3>
+      <p>تدوين الملاحظات الإدارية</p>
+      <a href="notes.html">فتح</a>
+    </div>
+    <div class="dashboard-card">
+      <h3>📋 الحالات</h3>
+      <p>متابعة الحالات والإجراءات</p>
+      <a href="cases.html">فتح</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  © 2026 شركة الغدير للنقل والتخليص المكرمي – جميع الحقوق محفوظة
+</footer>
+
+</body>
+</html>
